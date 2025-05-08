@@ -18,12 +18,12 @@ const cardsData = [
     {
       "name": "AMD(Advanced Micro Devices)",
       "description": " Bilgisayar işlemcileri ve grafik kartları üreten bir Amerikan şirketi.Intel’e rakip olan, işlemci ve ekran kartı üreten büyük bir teknoloji şirketidir.",
-      "image": ""
+      "image": "./images/amd.jpg"
     },
     {
       "name": "PCH (Platform Controller Hub)",
       "description": "Anakart üzerindeki işlemci dışındaki tüm bileşenlerin iletişimini yöneten yongadır. Eski sistemlerde “northbridge” ve “southbridge” vardı; modern sistemlerde bu işlevler PCH içinde toplanmıştır.USB, ses, ağ ve depolama gibi bileşenleri kontrol eder.Kısaca, “Bilgisayarın trafik polisi — her şeyi işlemciye yönlendirir!”",
-      "image": "./images/pch.avif"
+      "image": "./images/pch.jpg"
     },
     {
       "name": "DMI(Direct Media Interface)",
@@ -103,7 +103,7 @@ const cardsData = [
     {
       "name": "DisplayPort",
       "description": "Görüntü ve sesi yüksek kalitede aktaran modern bağlantı portudur.Kısaca, “Hem görüntü hem ses — net ve dijital bağlantı!”",
-      "image": "./images/displayport.jpg"
+      "image": "./images/display.jpg"
     },
     {
       "name": "VGA(Video Graphics Array)",
@@ -188,7 +188,7 @@ const cardsData = [
     },
     {
       "name":"PSU vs Power Converter",
-      "description":"	•	PSU, bilgisayardaki tüm sistemi besleyen büyük bir güç ünitesidir.Power converter ise voltajı bir formdan diğerine dönüştüren küçük devredir.PSU’nun içinde birçok power converter vardır ama tek başına bir power converter, PSU değildir.",
+      "description":"	PSU, bilgisayardaki tüm sistemi besleyen büyük bir güç ünitesidir.Power converter ise voltajı bir formdan diğerine dönüştüren küçük devredir.PSU’nun içinde birçok power converter vardır ama tek başına bir power converter, PSU değildir.",
       "image":""
     },
     
@@ -251,7 +251,7 @@ const cardsData = [
     },
     {
       "name":"SSD (Solid State Drive)",
-      "description":"verileri manyetik diskler yerine flash bellek yongaları üzerinde depolayan, hızlı ve dayanıklı bir veri depolama cihazıdır.SSD’ler, geleneksel sabit disk (HDD) sürücülere kıyasla çok daha yüksek okuma-yazma hızlarına sahiptir, sessiz çalışır, mekanik parça içermediğinden daha az enerji tüketir ve darbelere karşı daha dayanıklıdır. Bu nedenle işletim sistemlerinin, oyunların ve programların daha hızlı açılması gibi önemli avantajlar sağlar.",
+      "description":"Verileri manyetik diskler yerine flash bellek yongaları üzerinde depolayan, hızlı ve dayanıklı bir veri depolama cihazıdır.SSD’ler, geleneksel sabit disk (HDD) sürücülere kıyasla çok daha yüksek okuma-yazma hızlarına sahiptir, sessiz çalışır, mekanik parça içermediğinden daha az enerji tüketir ve darbelere karşı daha dayanıklıdır. Bu nedenle işletim sistemlerinin, oyunların ve programların daha hızlı açılması gibi önemli avantajlar sağlar.",
       "image":"./images/hdd.webp"
     },
     {
@@ -272,7 +272,7 @@ const cardsData = [
     {
       "name":"Front Panel(Ön Panel)",
       "description":"Bilgisayarda ön panel, kasa üzerindeki kullanıcının doğrudan erişebildiği giriş/çıkış portları ve düğmelerin bulunduğu bölümdür. “Bilgisayarın açma-kapama ve ışık kontrol merkezi!”",
-      "image":"./images/ön-panel.jpg"
+      "image":"./images/ön-panel.jpeg"
     },
     {
       "name":"Jumper",

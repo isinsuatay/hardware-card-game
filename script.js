@@ -11,6 +11,8 @@ let usedIndices = [];
 let intervalRef = null;
 let isSoundOn = true;
 let currentAudio = null;
+let pendingFlipCardEl = null; 
+let isInstantFlipMode = true;
 
 soundToggleButton.addEventListener("click", () => {
   isSoundOn = !isSoundOn;
@@ -19,6 +21,34 @@ soundToggleButton.addEventListener("click", () => {
 
   if (currentAudio) {
     currentAudio.muted = !isSoundOn;
+  }
+});
+
+const instantFlipToggleButton = document.getElementById("instantFlipToggleButton");
+instantFlipToggleButton.textContent = "⚡ Hızlı Mod";
+
+instantFlipToggleButton.addEventListener("click", () => {
+  isInstantFlipMode = !isInstantFlipMode;
+  instantFlipToggleButton.textContent = isInstantFlipMode ? "⚡ Hızlı Mod" : "⏳ Zamanlı Mod";
+
+  if (isInstantFlipMode) {
+    if (currentAudio) {
+      currentAudio.pause(); 
+      currentAudio.currentTime = 0; 
+    }
+
+    clearInterval(intervalRef);  
+    isTimerRunning = false;
+    timeLeft = 10; 
+    timeLeftEl.textContent = timeLeft;
+    timeLeftEl.classList.remove("low-time");
+
+    if (pendingFlipCardEl && pendingFlipCardEl.dataset.flipped === "false") {
+      pendingFlipCardEl.classList.add("flipped");
+      pendingFlipCardEl.dataset.flipped = "true";
+    }
+
+    pendingFlipCardEl = null; 
   }
 });
 
@@ -35,58 +65,77 @@ const renderCards = () => {
 
     const front = document.createElement("div");
     front.className = "card-front";
-    front.textContent = card.name;
-    if (selectedCardIndex === index) front.classList.add("highlighted-text");
-
+    front.innerHTML = `
+      <div class="card-title ${selectedCardIndex === index ? "highlighted-text" : ""}">${card.name}</div>
+      ${card.image ? `<img src="${card.image}" class="card-image" alt="${card.name}" />` : ""}
+    `;
+    
     const back = document.createElement("div");
     back.className = "card-back";
-    back.innerHTML = `${card.description}${card.image ? `<img src="${card.image}" class="card-image" alt="${card.name}" />` : ""}`;
+    back.innerHTML = card.description;
 
     inner.appendChild(front);
     inner.appendChild(back);
     cardEl.appendChild(inner);
     gameContainer.appendChild(cardEl);
 
-    let flipped = false;
+    cardEl.dataset.flipped = "false"; 
 
     cardEl.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (flipped) {
-        flipped = false;
+    
+      if (cardEl.dataset.flipped === "true") {
         cardEl.classList.remove("flipped");
+        cardEl.dataset.flipped = "false";
         return;
       }
-      startTimer(() => {
-        flipped = true;
+
+      if (isInstantFlipMode) {
         cardEl.classList.add("flipped");
-      });
+        cardEl.dataset.flipped = "true";
+      } else {
+        if (isTimerRunning) return;
+        pendingFlipCardEl = cardEl;
+        startTimer();
+      }
     });
   });
 };
 
-const startTimer = (onFinishFlip) => {
-  if (isTimerRunning) return;
+const startTimer = () => {
+  if (isTimerRunning || !pendingFlipCardEl) return;
 
   timeLeft = 10;
   isTimerRunning = true;
   timeLeftEl.textContent = timeLeft;
+  timeLeftEl.classList.remove("low-time");
 
-  // Ses başlat
   currentAudio = new Audio("sounds/sound.mp3");
   currentAudio.volume = 1;
   currentAudio.muted = !isSoundOn;
-  currentAudio.play();
+  currentAudio.play().catch((err) => console.warn("Ses çalma hatası:", err));
 
   intervalRef = setInterval(() => {
     timeLeft--;
     timeLeftEl.textContent = timeLeft;
 
+    if (timeLeft <= 3) {
+      timeLeftEl.classList.add("low-time");
+    }
+
     if (timeLeft === 0) {
       clearInterval(intervalRef);
       isTimerRunning = false;
+      timeLeftEl.classList.remove("low-time");
       timerIcon.classList.add("top-timer");
       setTimeout(() => timerIcon.classList.remove("top-timer"), 500);
-      onFinishFlip();
+
+      if (pendingFlipCardEl && pendingFlipCardEl.dataset.flipped === "false") {
+        pendingFlipCardEl.classList.add("flipped");
+        pendingFlipCardEl.dataset.flipped = "true";
+      }
+
+      pendingFlipCardEl = null;
       currentAudio = null;
     }
   }, 1000);
